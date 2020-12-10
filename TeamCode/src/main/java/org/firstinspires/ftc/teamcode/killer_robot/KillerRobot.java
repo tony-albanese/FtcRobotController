@@ -35,8 +35,7 @@ public class KillerRobot extends LinearOpMode {
     private DistanceSensor distanceSensor;
 
     private double MOTOR_POWER = 0.5;
-    public boolean objectIsClose = false;
-
+    private boolean killerMode = true;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -51,14 +50,6 @@ public class KillerRobot extends LinearOpMode {
     }
 
 
-    public double measureDistance() {
-        if (distanceSensor != null) {
-            return distanceSensor.getDistance(DistanceUnit.CM);
-        } else {
-            return 0;
-        }
-       
-    }
 
     private void initializeBaseHardware() {
 
@@ -120,6 +111,19 @@ public class KillerRobot extends LinearOpMode {
 
     }
 
+    public double measureDistance() {
+        if (distanceSensor != null) {
+            return distanceSensor.getDistance(DistanceUnit.CM);
+        } else {
+            return 0;
+        }
+
+    }
+
+    public boolean touchIsPressed() {
+        return touchSensor.getState();
+    }
+
 
     private final void runKillerRobot() {
         leftDriveOne.setPower(MOTOR_POWER);
@@ -159,7 +163,6 @@ public class KillerRobot extends LinearOpMode {
 
     protected void stopKillerRobot(){
 
-        objectIsClose = true;
     }
 
 
