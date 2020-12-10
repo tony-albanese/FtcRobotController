@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorREV2mDistance;
 
@@ -30,10 +30,9 @@ public class KillerRobot extends LinearOpMode {
     ColorSensor leftColorSensor;
     ColorSensor rightColorSensor;
 
-    TouchSensor touchSensor;
-
+    DigitalChannel touchSensor;
     SensorREV2mDistance distanceSensor;
-    
+
     private double MOTOR_POWER = 0.5;
     public boolean objectIsClose = false;
 
@@ -41,6 +40,9 @@ public class KillerRobot extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         initializeBaseHardware();
+        initializeColorSensors();
+        initializeTouchSensor();
+        initializeDistanceSensor();
 
 
         waitForStart();
@@ -63,18 +65,48 @@ public class KillerRobot extends LinearOpMode {
         leftElbow = hardwareMap.get(Servo.class, "left_elbow_servo");
         rightElbow = hardwareMap.get(Servo.class, "right_elbow_servo");
 
-        //Initialize the sensors.
-        leftColorSensor = hardwareMap.get(ColorSensor.class, "left_color_sensor");
-        rightColorSensor = hardwareMap.get(ColorSensor.class, "right_color_sensor");
-
-        touchSensor = hardwareMap.get(TouchSensor.class, "touch_sensor");
-        distanceSensor = hardwareMap.get(SensorREV2mDistance.class, "distance_sensor");
 
         leftDriveOne.setDirection(DcMotorSimple.Direction.REVERSE);
         rightDriveOne.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    private final void runKillerRobot(){
+    private void initializeColorSensors() {
+        try {
+            leftColorSensor = hardwareMap.get(ColorSensor.class, "left_color_sensor");
+            rightColorSensor = hardwareMap.get(ColorSensor.class, "right_color_sensor");
+        } catch (IllegalArgumentException e) {
+            telemetry.addData("ERROR", "Color sensors not initialized.");
+            rightColorSensor = null;
+            leftColorSensor = null;
+            telemetry.update();
+        }
+
+    }
+
+    private void initializeTouchSensor() {
+        try {
+            touchSensor = hardwareMap.get(DigitalChannel.class, "touch_sensor");
+            touchSensor.setMode(DigitalChannel.Mode.INPUT);
+        } catch (IllegalArgumentException e) {
+            telemetry.addData("ERROR", "Touch sensor not initialized.");
+            touchSensor = null;
+            telemetry.update();
+        }
+
+    }
+
+    private void initializeDistanceSensor() {
+        try {
+            distanceSensor = hardwareMap.get(SensorREV2mDistance.class, "distance_sensor");
+        } catch (IllegalArgumentException e) {
+            telemetry.addData("ERROR", "Distance sensor not initialized.");
+            distanceSensor = null;
+            telemetry.update();
+        }
+
+    }
+
+    private final void runKillerRobot() {
         leftDriveOne.setPower(MOTOR_POWER);
         leftDriveTwo.setPower(MOTOR_POWER);
         rightDriveOne.setPower(MOTOR_POWER);
