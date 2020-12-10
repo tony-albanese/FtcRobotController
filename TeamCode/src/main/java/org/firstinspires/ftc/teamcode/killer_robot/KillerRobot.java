@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode.killer_robot;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorREV2mDistance;
+import org.firstinspires.ftc.teamcode.Models.Eye;
 
 @TeleOp(name = "Killer Robot Base Class", group = "Linear Opmode")
 @Disabled
@@ -27,11 +28,10 @@ public class KillerRobot extends LinearOpMode {
     Servo leftElbow;
     Servo rightElbow;
 
-    ColorSensor leftColorSensor;
-    ColorSensor rightColorSensor;
-
-    DigitalChannel touchSensor;
-    SensorREV2mDistance distanceSensor;
+    Eye leftEye;
+    Eye rightEye;
+    private DigitalChannel touchSensor;
+    private SensorREV2mDistance distanceSensor;
 
     private double MOTOR_POWER = 0.5;
     public boolean objectIsClose = false;
@@ -71,13 +71,17 @@ public class KillerRobot extends LinearOpMode {
     }
 
     private void initializeColorSensors() {
+        NormalizedColorSensor leftColorSensor;
+        NormalizedColorSensor rightColorSensor;
         try {
-            leftColorSensor = hardwareMap.get(ColorSensor.class, "left_color_sensor");
-            rightColorSensor = hardwareMap.get(ColorSensor.class, "right_color_sensor");
+            leftColorSensor = hardwareMap.get(NormalizedColorSensor.class, "left_color_sensor");
+            rightColorSensor = hardwareMap.get(NormalizedColorSensor.class, "right_color_sensor");
+            leftEye = new Eye(leftColorSensor, telemetry);
+            rightEye = new Eye(rightColorSensor, telemetry);
         } catch (IllegalArgumentException e) {
             telemetry.addData("ERROR", "Color sensors not initialized.");
-            rightColorSensor = null;
-            leftColorSensor = null;
+            leftEye = null;
+            rightEye = null;
             telemetry.update();
         }
 
@@ -106,6 +110,7 @@ public class KillerRobot extends LinearOpMode {
 
     }
 
+    
     private final void runKillerRobot() {
         leftDriveOne.setPower(MOTOR_POWER);
         leftDriveTwo.setPower(MOTOR_POWER);
