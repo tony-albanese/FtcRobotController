@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.killer_robot;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorREV2mDistance;
 
 @TeleOp(name = "Killer Robot Base Class", group = "Linear Opmode")
+@Disabled
 public class KillerRobot extends LinearOpMode {
 
 
@@ -30,33 +32,23 @@ public class KillerRobot extends LinearOpMode {
 
     TouchSensor touchSensor;
 
-    SensorREV2mDistance distanceSensor = null;
-
-
+    SensorREV2mDistance distanceSensor;
+    
     private double MOTOR_POWER = 0.5;
     public boolean objectIsClose = false;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-        System.out.println("Hello, world!");
-        initializeHardware();
+        initializeBaseHardware();
+
+
         waitForStart();
 
-        while (opModeIsActive() && !objectIsClose) {
-            runKillerRobot();
-
-            if (gamepad1.a || touchSensor.isPressed()) {
-                stopKillerRobot();
-            }
-
-        }
-
-        resetRobot();
     }
 
 
-    private final void initializeHardware() {
+    private void initializeBaseHardware() {
 
         //Initialize the motors
         leftDriveOne = hardwareMap.get(DcMotor.class, "left_drive_one");
