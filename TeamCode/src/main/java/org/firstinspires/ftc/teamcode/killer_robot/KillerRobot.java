@@ -6,10 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorREV2mDistance;
 import org.firstinspires.ftc.teamcode.Models.Eye;
 
 @TeleOp(name = "Killer Robot Base Class", group = "Linear Opmode")
@@ -31,7 +31,7 @@ public class KillerRobot extends LinearOpMode {
     Eye leftEye;
     Eye rightEye;
     private DigitalChannel touchSensor;
-    private SensorREV2mDistance distanceSensor;
+    private DistanceSensor distanceSensor;
 
     private double MOTOR_POWER = 0.5;
     public boolean objectIsClose = false;
@@ -49,6 +49,10 @@ public class KillerRobot extends LinearOpMode {
 
     }
 
+
+    public void measureDistance() {
+        
+    }
 
     private void initializeBaseHardware() {
 
@@ -101,7 +105,7 @@ public class KillerRobot extends LinearOpMode {
 
     private void initializeDistanceSensor() {
         try {
-            distanceSensor = hardwareMap.get(SensorREV2mDistance.class, "distance_sensor");
+            distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
         } catch (IllegalArgumentException e) {
             telemetry.addData("ERROR", "Distance sensor not initialized.");
             distanceSensor = null;
@@ -110,7 +114,7 @@ public class KillerRobot extends LinearOpMode {
 
     }
 
-    
+
     private final void runKillerRobot() {
         leftDriveOne.setPower(MOTOR_POWER);
         leftDriveTwo.setPower(MOTOR_POWER);
