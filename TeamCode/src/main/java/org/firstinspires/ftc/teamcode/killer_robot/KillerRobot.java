@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Models.Eye;
 
 @TeleOp(name = "Killer Robot Base Class", group = "Linear Opmode")
@@ -50,8 +51,13 @@ public class KillerRobot extends LinearOpMode {
     }
 
 
-    public void measureDistance() {
-        
+    public double measureDistance() {
+        if (distanceSensor != null) {
+            return distanceSensor.getDistance(DistanceUnit.CM);
+        } else {
+            return 0;
+        }
+       
     }
 
     private void initializeBaseHardware() {
