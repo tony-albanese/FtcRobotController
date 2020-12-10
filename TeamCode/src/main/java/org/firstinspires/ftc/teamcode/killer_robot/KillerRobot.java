@@ -47,6 +47,12 @@ public class KillerRobot extends LinearOpMode {
 
         waitForStart();
 
+        while (opModeIsActive() && killerMode) {
+            runKillerRobot();
+        }
+
+        resetRobot();
+
     }
 
 
@@ -124,7 +130,6 @@ public class KillerRobot extends LinearOpMode {
         return touchSensor.getState();
     }
 
-
     private final void runKillerRobot() {
         leftDriveOne.setPower(MOTOR_POWER);
         leftDriveTwo.setPower(MOTOR_POWER);
@@ -134,19 +139,19 @@ public class KillerRobot extends LinearOpMode {
         leftShoulder.setPosition(0.7);
         rightShoulder.setPosition(0.4);
         leftElbow.setPosition(0.3);
-        sleep(1000);
+        sleep(500);
         leftShoulder.setPosition(1.0);
         rightElbow.setPosition(0.0);
         neckPosition.setPosition(0.9);
-        sleep(800);
+        sleep(500);
         leftShoulder.setPosition(0.5);
         rightShoulder.setPosition(1.0);
         sleep(1000);
+        neckPosition.setPosition(0.2);
         leftElbow.setPosition(0.9);
         rightElbow.setPosition(0.9);
         sleep(800);
     }
-
 
     private final void resetRobot(){
         leftDriveOne.setPower(0.0);
@@ -160,9 +165,9 @@ public class KillerRobot extends LinearOpMode {
         leftShoulder.setPosition(1.0);
     }
 
-
     protected void stopKillerRobot(){
 
+        killerMode = false;
     }
 
 
