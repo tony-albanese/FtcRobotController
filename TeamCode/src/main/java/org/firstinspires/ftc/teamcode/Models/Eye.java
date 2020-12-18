@@ -21,7 +21,7 @@ public class Eye {
         eye = null;
     }
 
-    private DetectedColor detectColors() {
+    public DetectedColor detectColors() {
         if (eye != null) {
             return new DetectedColor(eye.getNormalizedColors());
         } else {

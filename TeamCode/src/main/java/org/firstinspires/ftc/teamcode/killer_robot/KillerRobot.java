@@ -56,7 +56,12 @@ public class KillerRobot extends LinearOpMode {
                 killerMode = false;
             }
 
+            float green = rightEye.detectColors().greenValue;
+            float red = leftEye.detectColors().redValue;
 
+            telemetry.addData("RED", red);
+            telemetry.addData("GREEN", green);
+            telemetry.update();
         }
 
         resetRobot();
