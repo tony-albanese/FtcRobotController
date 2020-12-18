@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.Besnik;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name="Claw Robot", group="Linear Opmode")
+@TeleOp(name = "Claw Robot", group = "Besnik")
 public class ClawRobot extends LinearOpMode {
     DcMotor leftDrive;
     DcMotor rightDrive;

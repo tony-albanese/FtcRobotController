@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name = "Mr Robot Tank Mode", group = "Linear Opmode")
+@TeleOp(name = "Mr Robot Tank Mode", group = "Besnik")
 public class MrRobotTankMode extends LinearOpMode {
 
 
