@@ -54,7 +54,7 @@ public class KillerRobot extends LinearOpMode {
             if (gamepad1.a) {
                 killerMode = false;
             }
-            
+
 
         }
 
@@ -169,7 +169,6 @@ public class KillerRobot extends LinearOpMode {
         sleep(500);
         leftShoulder.setPosition(0.5);
         rightShoulder.setPosition(1.0);
-        sleep(1000);
         neckPosition.setPosition(0.2);
         leftElbow.setPosition(0.9);
         rightElbow.setPosition(0.9);
