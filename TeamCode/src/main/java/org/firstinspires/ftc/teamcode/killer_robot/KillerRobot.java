@@ -35,6 +35,7 @@ public class KillerRobot extends LinearOpMode {
     private DistanceSensor distanceSensor;
 
     public boolean killerMode = true;
+    private boolean baseHardwareConfigured = false;
     private double MOTOR_POWER = 0.0;
 
     @Override
@@ -47,7 +48,7 @@ public class KillerRobot extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive() && killerMode) {
+        while (baseHardwareConfigured && opModeIsActive() && killerMode) {
             runKillerRobot();
             stopKillerRobot(); //An interface might be better here.
 
@@ -66,22 +67,39 @@ public class KillerRobot extends LinearOpMode {
 
     private void initializeBaseHardware() {
 
-        //Initialize the motors
-        leftDriveOne = hardwareMap.get(DcMotor.class, "left_drive_one");
-        leftDriveTwo = hardwareMap.get(DcMotor.class, "left_drive_two");
-        rightDriveOne = hardwareMap.get(DcMotor.class, "right_drive_one");
-        rightDriveTwo = hardwareMap.get(DcMotor.class, "right_drive_two");
+        try {
+            //Initialize the motors
+            leftDriveOne = hardwareMap.get(DcMotor.class, "left_drive_one");
+            leftDriveTwo = hardwareMap.get(DcMotor.class, "left_drive_two");
+            rightDriveOne = hardwareMap.get(DcMotor.class, "right_drive_one");
+            rightDriveTwo = hardwareMap.get(DcMotor.class, "right_drive_two");
 
-        //Initialize the servos.
-        neckPosition = hardwareMap.get(Servo.class, "neck_servo");
-        leftShoulder = hardwareMap.get(Servo.class, "left_shoulder_servo");
-        rightShoulder = hardwareMap.get(Servo.class, "right_shoulder_servo");
-        leftElbow = hardwareMap.get(Servo.class, "left_elbow_servo");
-        rightElbow = hardwareMap.get(Servo.class, "right_elbow_servo");
+            //Initialize the servos.
+            neckPosition = hardwareMap.get(Servo.class, "neck_servo");
+            leftShoulder = hardwareMap.get(Servo.class, "left_shoulder_servo");
+            rightShoulder = hardwareMap.get(Servo.class, "right_shoulder_servo");
+            leftElbow = hardwareMap.get(Servo.class, "left_elbow_servo");
+            rightElbow = hardwareMap.get(Servo.class, "right_elbow_servo");
 
 
-        leftDriveOne.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightDriveOne.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftDriveOne.setDirection(DcMotorSimple.Direction.REVERSE);
+            rightDriveOne.setDirection(DcMotorSimple.Direction.REVERSE);
+
+            baseHardwareConfigured = true;
+            telemetry.addData("BASE HARDWARE", "Base hardware initialized.");
+            telemetry.update();
+            sleep(1000);
+
+        } catch (IllegalArgumentException e) {
+
+            baseHardwareConfigured = false;
+            telemetry.addData("BASE HARDWARE", "Base hardware is not configured.");
+            telemetry.update();
+            sleep(500);
+
+        }
+
+
     }
 
     private void initializeColorSensors() {
