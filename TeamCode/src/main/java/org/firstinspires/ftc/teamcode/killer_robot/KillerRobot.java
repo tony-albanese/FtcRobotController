@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Models.Eye;
 
-@TeleOp(name = "Killer Robot Base Class", group = "Linear Opmode")
+@TeleOp(name = "Killer Robot Base Class", group = "Killer Robot")
 @Disabled
 public class KillerRobot extends LinearOpMode {
 
@@ -62,8 +62,6 @@ public class KillerRobot extends LinearOpMode {
         resetRobot();
 
     }
-
-
 
     private void initializeBaseHardware() {
 
