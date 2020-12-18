@@ -34,8 +34,8 @@ public class KillerRobot extends LinearOpMode {
     private DigitalChannel touchSensor;
     private DistanceSensor distanceSensor;
 
-    private double MOTOR_POWER = 0.5;
-    private boolean killerMode = true;
+    public boolean killerMode = true;
+    private double MOTOR_POWER = 0.0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -49,6 +49,13 @@ public class KillerRobot extends LinearOpMode {
 
         while (opModeIsActive() && killerMode) {
             runKillerRobot();
+            stopKillerRobot(); //An interface might be better here.
+
+            if (gamepad1.a) {
+                killerMode = false;
+            }
+            
+
         }
 
         resetRobot();
@@ -66,7 +73,7 @@ public class KillerRobot extends LinearOpMode {
         rightDriveTwo = hardwareMap.get(DcMotor.class, "right_drive_two");
 
         //Initialize the servos.
-        neckPosition = hardwareMap.get(Servo.class, "neck_position_servo");
+        neckPosition = hardwareMap.get(Servo.class, "neck_servo");
         leftShoulder = hardwareMap.get(Servo.class, "left_shoulder_servo");
         rightShoulder = hardwareMap.get(Servo.class, "right_shoulder_servo");
         leftElbow = hardwareMap.get(Servo.class, "left_elbow_servo");
@@ -85,49 +92,65 @@ public class KillerRobot extends LinearOpMode {
             rightColorSensor = hardwareMap.get(NormalizedColorSensor.class, "right_color_sensor");
             leftEye = new Eye(leftColorSensor, telemetry);
             rightEye = new Eye(rightColorSensor, telemetry);
+            telemetry.addData("SENSORS", "Color sensors initialized.");
         } catch (IllegalArgumentException e) {
             telemetry.addData("ERROR", "Color sensors not initialized.");
             leftEye = null;
             rightEye = null;
-            telemetry.update();
-        }
 
+        }
+        telemetry.update();
+        sleep(1000);
     }
 
     private void initializeTouchSensor() {
         try {
             touchSensor = hardwareMap.get(DigitalChannel.class, "touch_sensor");
             touchSensor.setMode(DigitalChannel.Mode.INPUT);
+            telemetry.addData("SENSORS: ", "Touch sensor initialized.");
         } catch (IllegalArgumentException e) {
             telemetry.addData("ERROR", "Touch sensor not initialized.");
             touchSensor = null;
-            telemetry.update();
+
         }
+        telemetry.update();
+        sleep(1000);
 
     }
 
     private void initializeDistanceSensor() {
         try {
             distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
+            telemetry.addData("SENSORS: ", "Distance sensor initialized.");
         } catch (IllegalArgumentException e) {
             telemetry.addData("ERROR", "Distance sensor not initialized.");
             distanceSensor = null;
-            telemetry.update();
         }
+        telemetry.update();
+        sleep(1000);
 
     }
 
     public double measureDistance() {
         if (distanceSensor != null) {
-            return distanceSensor.getDistance(DistanceUnit.CM);
+            double distance = distanceSensor.getDistance(DistanceUnit.CM);
+            telemetry.addData("Disance in CM: ", distance);
+            return distance;
         } else {
-            return 0;
+            return -1;
         }
 
     }
 
     public boolean touchIsPressed() {
-        return touchSensor.getState();
+        if (touchSensor != null) {
+            telemetry.addData("Touch: ", touchSensor.getState());
+            telemetry.update();
+            sleep(100);
+            return !touchSensor.getState();
+        } else {
+            return false;
+        }
     }
 
     private final void runKillerRobot() {
@@ -166,8 +189,6 @@ public class KillerRobot extends LinearOpMode {
     }
 
     protected void stopKillerRobot(){
-
-        killerMode = false;
     }
 
 
