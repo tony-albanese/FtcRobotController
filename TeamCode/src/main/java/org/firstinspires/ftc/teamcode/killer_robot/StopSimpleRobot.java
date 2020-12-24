@@ -7,7 +7,7 @@ public class StopSimpleRobot extends SimpleRobot {
 
     @Override
     protected void stopKillerRobot() {
-        
+
     }
 
     @Override
