@@ -31,6 +31,7 @@ public class KillerRobot extends LinearOpMode {
 
     Eye leftEye;
     Eye rightEye;
+
     private DigitalChannel touchSensor;
     private DistanceSensor distanceSensor;
 
@@ -45,10 +46,15 @@ public class KillerRobot extends LinearOpMode {
         initializeTouchSensor();
         initializeDistanceSensor();
 
+        while (opModeIsActive()) {
+            if (gamepad1.a) {
+                killerMode = false;
+            }
 
-        waitForStart();
-
-        startKillerRobot();
+            runKillerRobot();
+            stopKillerRobot();
+            startKillerRobot();
+        }
 
     }
 
@@ -159,25 +165,38 @@ public class KillerRobot extends LinearOpMode {
     }
 
     private final void runKillerRobot() {
-        leftDriveOne.setPower(MOTOR_POWER);
-        leftDriveTwo.setPower(MOTOR_POWER);
-        rightDriveOne.setPower(MOTOR_POWER);
-        rightDriveTwo.setPower(MOTOR_POWER);
 
-        leftShoulder.setPosition(0.7);
-        rightShoulder.setPosition(0.4);
-        leftElbow.setPosition(0.3);
-        sleep(500);
-        leftShoulder.setPosition(1.0);
-        rightElbow.setPosition(0.0);
-        neckPosition.setPosition(0.9);
-        sleep(500);
-        leftShoulder.setPosition(0.5);
-        rightShoulder.setPosition(1.0);
-        neckPosition.setPosition(0.2);
-        leftElbow.setPosition(0.9);
-        rightElbow.setPosition(0.9);
-        sleep(800);
+        if (baseHardwareConfigured && killerMode) {
+            leftDriveOne.setPower(MOTOR_POWER);
+            leftDriveTwo.setPower(MOTOR_POWER);
+            rightDriveOne.setPower(MOTOR_POWER);
+            rightDriveTwo.setPower(MOTOR_POWER);
+
+            leftShoulder.setPosition(0.7);
+            rightShoulder.setPosition(0.4);
+            leftElbow.setPosition(0.3);
+            sleep(500);
+            leftShoulder.setPosition(1.0);
+            rightElbow.setPosition(0.0);
+            neckPosition.setPosition(0.9);
+            sleep(500);
+            leftShoulder.setPosition(0.5);
+            rightShoulder.setPosition(1.0);
+            neckPosition.setPosition(0.2);
+            leftElbow.setPosition(0.9);
+            rightElbow.setPosition(0.9);
+
+            float green = rightEye.detectColors().greenValue;
+            float red = leftEye.detectColors().redValue;
+
+            telemetry.addData("RED", red);
+            telemetry.addData("GREEN", green);
+            telemetry.update();
+            sleep(500);
+        } else {
+            resetRobot();
+        }
+
     }
 
     private final void resetRobot(){
@@ -195,26 +214,10 @@ public class KillerRobot extends LinearOpMode {
     protected void stopKillerRobot() {
     }
 
-    private final void startKillerRobot() {
-        while (baseHardwareConfigured && opModeIsActive() && killerMode) {
-            runKillerRobot();
-            stopKillerRobot(); //An interface might be better here.
-
-            if (gamepad1.a) {
-                killerMode = false;
-            }
-
-            float green = rightEye.detectColors().greenValue;
-            float red = leftEye.detectColors().redValue;
-
-            telemetry.addData("RED", red);
-            telemetry.addData("GREEN", green);
-            telemetry.update();
-        }
-
-        resetRobot();
+    protected void startKillerRobot() {
 
     }
+
 
 
 }
