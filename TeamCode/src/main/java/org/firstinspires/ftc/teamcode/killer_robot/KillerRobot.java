@@ -47,6 +47,7 @@ public class KillerRobot extends LinearOpMode {
         initializeDistanceSensor();
 
         while (opModeIsActive()) {
+            telemetry.clear();
             if (gamepad1.a) {
                 killerMode = false;
             }
@@ -54,6 +55,7 @@ public class KillerRobot extends LinearOpMode {
             runKillerRobot();
             stopKillerRobot();
             startKillerRobot();
+            telemetry.update();
         }
 
     }
@@ -101,6 +103,8 @@ public class KillerRobot extends LinearOpMode {
         try {
             leftColorSensor = hardwareMap.get(NormalizedColorSensor.class, "left_color_sensor");
             rightColorSensor = hardwareMap.get(NormalizedColorSensor.class, "right_color_sensor");
+            leftColorSensor.setGain(150);
+            rightColorSensor.setGain(150);
             leftEye = new Eye(leftColorSensor, telemetry);
             rightEye = new Eye(rightColorSensor, telemetry);
             telemetry.addData("SENSORS", "Color sensors initialized.");
@@ -145,7 +149,6 @@ public class KillerRobot extends LinearOpMode {
     public double measureDistance() {
         if (distanceSensor != null) {
             double distance = distanceSensor.getDistance(DistanceUnit.CM);
-            telemetry.addData("Disance in CM: ", distance);
             return distance;
         } else {
             return -1;
@@ -155,8 +158,6 @@ public class KillerRobot extends LinearOpMode {
 
     public boolean touchIsPressed() {
         if (touchSensor != null) {
-            telemetry.addData("Touch: ", touchSensor.getState());
-            telemetry.update();
             sleep(100);
             return !touchSensor.getState();
         } else {
@@ -189,9 +190,12 @@ public class KillerRobot extends LinearOpMode {
             float green = rightEye.detectColors().greenValue;
             float red = leftEye.detectColors().redValue;
 
+            double distance = measureDistance();
+
             telemetry.addData("RED", red);
             telemetry.addData("GREEN", green);
-            telemetry.update();
+            telemetry.addData("Distance in CM: ", distance);
+            telemetry.addData("Touch button pressed: ", touchIsPressed());
             sleep(500);
         } else {
             resetRobot();
