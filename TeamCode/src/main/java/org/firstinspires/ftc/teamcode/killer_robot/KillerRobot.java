@@ -48,23 +48,7 @@ public class KillerRobot extends LinearOpMode {
 
         waitForStart();
 
-        while (baseHardwareConfigured && opModeIsActive() && killerMode) {
-            runKillerRobot();
-            stopKillerRobot(); //An interface might be better here.
-
-            if (gamepad1.a) {
-                killerMode = false;
-            }
-
-            float green = rightEye.detectColors().greenValue;
-            float red = leftEye.detectColors().redValue;
-
-            telemetry.addData("RED", red);
-            telemetry.addData("GREEN", green);
-            telemetry.update();
-        }
-
-        resetRobot();
+        startKillerRobot();
 
     }
 
@@ -208,7 +192,28 @@ public class KillerRobot extends LinearOpMode {
         leftShoulder.setPosition(1.0);
     }
 
-    protected void stopKillerRobot(){
+    protected void stopKillerRobot() {
+    }
+
+    private final void startKillerRobot() {
+        while (baseHardwareConfigured && opModeIsActive() && killerMode) {
+            runKillerRobot();
+            stopKillerRobot(); //An interface might be better here.
+
+            if (gamepad1.a) {
+                killerMode = false;
+            }
+
+            float green = rightEye.detectColors().greenValue;
+            float red = leftEye.detectColors().redValue;
+
+            telemetry.addData("RED", red);
+            telemetry.addData("GREEN", green);
+            telemetry.update();
+        }
+
+        resetRobot();
+
     }
 
 
