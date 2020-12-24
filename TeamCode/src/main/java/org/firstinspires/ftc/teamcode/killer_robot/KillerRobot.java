@@ -36,7 +36,7 @@ public class KillerRobot extends LinearOpMode {
 
     public boolean killerMode = true;
     private boolean baseHardwareConfigured = false;
-    private double MOTOR_POWER = 0.0;
+    private double MOTOR_POWER = 0.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
