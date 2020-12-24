@@ -4,7 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.Models.Eye;
 
 
 @TeleOp(name = "SimpleRobot Base Class", group = "Linear Opmode")
@@ -14,17 +19,29 @@ public class SimpleRobot extends LinearOpMode {
     String SENSOR_TAG = "Sensors";
     String HARDWARE_TAG = "Hardware";
 
-    
+    Eye eye;
+
     DcMotor leftDrive;
     DcMotor rightDrive;
     Servo leftShoulder;
     Servo rightShoulder;
+    private double MOTOR_POWER = 0.5;
+    private DigitalChannel touchSensor;
+    private DistanceSensor distanceSensor;
+
 
     boolean baseHardwareInitialized = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
         initializeBaseHardware();
+        initializeSensors();
+
+        waitForStart();
+
+        while (opModeIsActive()) {
+            
+        }
 
     }
 
@@ -45,6 +62,30 @@ public class SimpleRobot extends LinearOpMode {
             telemetry.update();
             sleep(1000);
 
+
+        }
+
+    }
+
+    private final void initializeSensors() {
+
+        try {
+            touchSensor = hardwareMap.get(DigitalChannel.class, "touch_sensor");
+            touchSensor.setMode(DigitalChannel.Mode.INPUT);
+
+            distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
+
+
+            NormalizedColorSensor colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
+            eye = new Eye(colorSensor, telemetry);
+
+            telemetry.addData(SENSOR_TAG, "Sensors initializded.");
+            sleep(1000);
+
+
+        } catch (IllegalArgumentException e) {
+            telemetry.addData(SENSOR_TAG, "Sensors not initialized.");
+            sleep(1000);
 
         }
 
