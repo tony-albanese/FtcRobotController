@@ -46,10 +46,12 @@ public class SimpleRobot extends LinearOpMode {
                 killerMode = false;
             }
 
+            telemetry.clear();
             runKillerRobot();
             stopKillerRobot();
             startKillerRobot();
 
+            telemetry.update();
         }
 
     }
@@ -86,15 +88,17 @@ public class SimpleRobot extends LinearOpMode {
 
 
             NormalizedColorSensor colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
-            //colorSensor.setGain();
+            colorSensor.setGain(150);
             eye = new Eye(colorSensor, telemetry);
 
-            telemetry.addData(SENSOR_TAG, "Sensors initializded.");
+            telemetry.addData(SENSOR_TAG, "Sensors initialized.");
+            telemetry.update();
             sleep(1000);
 
 
         } catch (IllegalArgumentException e) {
             telemetry.addData(SENSOR_TAG, "Sensors not initialized.");
+            telemetry.update();
             sleep(1000);
 
         }
@@ -118,7 +122,8 @@ public class SimpleRobot extends LinearOpMode {
             telemetry.addData("Red: ", red);
             telemetry.addData("Green: ", green);
             telemetry.addData("Distance: ", distance);
-            telemetry.update();
+            telemetry.addData("Button pressed: ", touchIsPressed());
+
             sleep(200);
         } else {
             resetRobot();
@@ -135,7 +140,6 @@ public class SimpleRobot extends LinearOpMode {
     public double measureDistance() {
         if (distanceSensor != null) {
             double distance = distanceSensor.getDistance(DistanceUnit.CM);
-            telemetry.addData("Disance in CM: ", distance);
             return distance;
         } else {
             return -1;
@@ -145,9 +149,6 @@ public class SimpleRobot extends LinearOpMode {
 
     public boolean touchIsPressed() {
         if (touchSensor != null) {
-            telemetry.addData("Touch: ", touchSensor.getState());
-            telemetry.update();
-            sleep(100);
             return !touchSensor.getState();
         } else {
             return false;
