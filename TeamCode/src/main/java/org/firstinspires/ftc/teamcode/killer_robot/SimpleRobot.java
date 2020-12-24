@@ -110,11 +110,14 @@ public class SimpleRobot extends LinearOpMode {
             sleep(500);
             leftShoulder.setPosition(0.9);
             rightShoulder.setPosition(0.9);
+
+            double distance = measureDistance();
             double green = eye.detectColors().greenValue;
             double red = eye.detectColors().redValue;
 
             telemetry.addData("Red: ", red);
             telemetry.addData("Green: ", green);
+            telemetry.addData("Distance: ", distance);
             telemetry.update();
             sleep(200);
         } else {
