@@ -32,6 +32,7 @@ public class SimpleRobot extends LinearOpMode {
 
 
     boolean baseHardwareInitialized = false;
+    boolean killerMode = true;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -41,6 +42,13 @@ public class SimpleRobot extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            if (gamepad1.a) {
+                killerMode = false;
+            }
+
+            runKillerRobot();
+            stopKillerRobot();
+            startKillerRobot();
 
         }
 
@@ -78,6 +86,7 @@ public class SimpleRobot extends LinearOpMode {
 
 
             NormalizedColorSensor colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
+            //colorSensor.setGain();
             eye = new Eye(colorSensor, telemetry);
 
             telemetry.addData(SENSOR_TAG, "Sensors initializded.");
@@ -92,6 +101,33 @@ public class SimpleRobot extends LinearOpMode {
 
     }
 
+    private final void runKillerRobot() {
+        if (baseHardwareInitialized && killerMode) {
+            leftShoulder.setPosition(0.5);
+            rightShoulder.setPosition(0.5);
+            leftDrive.setPower(MOTOR_POWER);
+            rightDrive.setPower(MOTOR_POWER);
+            sleep(500);
+            leftShoulder.setPosition(0.9);
+            rightShoulder.setPosition(0.9);
+            double green = eye.detectColors().greenValue;
+            double red = eye.detectColors().redValue;
+
+            telemetry.addData("Red: ", red);
+            telemetry.addData("Green: ", green);
+            telemetry.update();
+            sleep(200);
+        } else {
+            resetRobot();
+        }
+    }
+
+    private final void resetRobot() {
+        leftShoulder.setPosition(0.0);
+        rightShoulder.setPosition(0.0);
+        leftDrive.setPower(0.0);
+        rightDrive.setPower(0.0);
+    }
 
     public double measureDistance() {
         if (distanceSensor != null) {
@@ -113,5 +149,14 @@ public class SimpleRobot extends LinearOpMode {
         } else {
             return false;
         }
+    }
+
+
+    //Methods to be overridden.
+    protected void stopKillerRobot() {
+    }
+
+    protected void startKillerRobot() {
+
     }
 }
