@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Models.Eye;
 
 
@@ -40,7 +41,7 @@ public class SimpleRobot extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            
+
         }
 
     }
@@ -92,4 +93,25 @@ public class SimpleRobot extends LinearOpMode {
     }
 
 
+    public double measureDistance() {
+        if (distanceSensor != null) {
+            double distance = distanceSensor.getDistance(DistanceUnit.CM);
+            telemetry.addData("Disance in CM: ", distance);
+            return distance;
+        } else {
+            return -1;
+        }
+
+    }
+
+    public boolean touchIsPressed() {
+        if (touchSensor != null) {
+            telemetry.addData("Touch: ", touchSensor.getState());
+            telemetry.update();
+            sleep(100);
+            return !touchSensor.getState();
+        } else {
+            return false;
+        }
+    }
 }
