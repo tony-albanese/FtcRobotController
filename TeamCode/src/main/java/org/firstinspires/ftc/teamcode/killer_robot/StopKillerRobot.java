@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.killer_robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Name: ", group = "Stop Killer Robot")
+@TeleOp(name = "Name: ", group = "Killer Robot")
 public class StopKillerRobot extends KillerRobot {
 
 

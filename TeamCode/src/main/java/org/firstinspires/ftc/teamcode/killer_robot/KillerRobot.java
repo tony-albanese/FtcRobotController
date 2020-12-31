@@ -34,6 +34,7 @@ public class KillerRobot extends LinearOpMode {
 
     private DigitalChannel touchSensor;
     private DistanceSensor distanceSensor;
+    private float GAIN = 5.0f;
 
     public boolean killerMode = true;
     private boolean baseHardwareConfigured = false;
@@ -50,6 +51,18 @@ public class KillerRobot extends LinearOpMode {
             telemetry.clear();
             if (gamepad1.a) {
                 killerMode = false;
+            }
+
+            if (gamepad1.left_bumper) {
+                GAIN = (float) (GAIN - 1);
+                leftEye.setGain(GAIN);
+                rightEye.setGain(GAIN);
+            }
+
+            if (gamepad1.right_bumper) {
+                GAIN = (float) (GAIN + 1);
+                leftEye.setGain(GAIN);
+                rightEye.setGain(GAIN);
             }
 
             runKillerRobot();
@@ -103,8 +116,8 @@ public class KillerRobot extends LinearOpMode {
         try {
             leftColorSensor = hardwareMap.get(NormalizedColorSensor.class, "left_color_sensor");
             rightColorSensor = hardwareMap.get(NormalizedColorSensor.class, "right_color_sensor");
-            leftColorSensor.setGain(150);
-            rightColorSensor.setGain(150);
+            leftColorSensor.setGain(GAIN);
+            rightColorSensor.setGain(GAIN);
             leftEye = new Eye(leftColorSensor, telemetry);
             rightEye = new Eye(rightColorSensor, telemetry);
             telemetry.addData("SENSORS", "Color sensors initialized.");
@@ -158,7 +171,7 @@ public class KillerRobot extends LinearOpMode {
 
     public boolean touchIsPressed() {
         if (touchSensor != null) {
-            sleep(100);
+            //sleep(100);
             return !touchSensor.getState();
         } else {
             return false;
