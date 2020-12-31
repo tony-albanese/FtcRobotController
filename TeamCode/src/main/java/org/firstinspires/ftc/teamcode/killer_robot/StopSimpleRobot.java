@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.killer_robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Stop Simple Robot", group = "Killer Robot Test")
+@TeleOp(name = "Stop Simple Robot", group = "Simple Robot")
 public class StopSimpleRobot extends SimpleRobot {
 
     @Override

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Models.Eye;
 
 
-@TeleOp(name = "SimpleRobot Base Class", group = "Linear Opmode")
+@TeleOp(name = "SimpleRobot Base Class", group = "Simple Robot")
 @Disabled
 public class SimpleRobot extends LinearOpMode {
 
@@ -26,9 +26,11 @@ public class SimpleRobot extends LinearOpMode {
     DcMotor rightDrive;
     Servo leftShoulder;
     Servo rightShoulder;
+
     private double MOTOR_POWER = 0.5;
     private DigitalChannel touchSensor;
     private DistanceSensor distanceSensor;
+    private float GAIN = 5.0f;
 
 
     boolean baseHardwareInitialized = false;
@@ -44,6 +46,17 @@ public class SimpleRobot extends LinearOpMode {
         while (opModeIsActive()) {
             if (gamepad1.a) {
                 killerMode = false;
+            }
+
+            if (gamepad1.left_bumper) {
+                GAIN = (float) (GAIN - 1);
+                eye.setGain(GAIN);
+
+            }
+
+            if (gamepad1.right_bumper) {
+                GAIN = (float) (GAIN + 1);
+                eye.setGain(GAIN);
             }
 
             telemetry.clear();
@@ -88,7 +101,7 @@ public class SimpleRobot extends LinearOpMode {
 
 
             NormalizedColorSensor colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
-            colorSensor.setGain(150);
+            colorSensor.setGain(GAIN);
             eye = new Eye(colorSensor, telemetry);
 
             telemetry.addData(SENSOR_TAG, "Sensors initialized.");
