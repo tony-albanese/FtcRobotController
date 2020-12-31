@@ -34,4 +34,8 @@ public class Eye {
         }
 
     }
+
+    public void setGain(float gain) {
+        eye.setGain(gain);
+    }
 }
